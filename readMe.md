@@ -8,7 +8,7 @@
 
 ## 组件
 Peewee
-PyCharts
+Pyecharts
 Flask
 
 
