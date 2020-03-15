@@ -1,5 +1,7 @@
 from .BaseModel import *
 from .XBill import XBill
+from Classifier.Classifier import Classifier
+from Config.const import BillStatus
 
 
 class AlipayBill(BaseModel):
@@ -30,11 +32,11 @@ class AlipayBill(BaseModel):
 
         def unify_status(fund_status):
             if '支出' in fund_status:
-                status = '支出'
+                status = BillStatus.PAYOUT
             elif '收入' in fund_status:
-                status = '收入'
+                status = BillStatus.INCOME
             elif '资金转移' in fund_status:
-                status = "内部转账"
+                status = BillStatus.INTERNAL_TRANS
             else:
                 status = fund_status
             return status
