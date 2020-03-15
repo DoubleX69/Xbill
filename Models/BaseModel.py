@@ -1,6 +1,6 @@
 from peewee import *
 
-database = MySQLDatabase('accounting', **{'host': 'localhost', 'port': 3306, 'user': 'root', 'password': '****'})
+database = SqliteDatabase('account.db', pragmas={'journal_mode': 'wal', 'cache_size': -1024 * 64})
 
 
 class UnknownField(object):
