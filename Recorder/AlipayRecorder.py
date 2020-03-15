@@ -2,6 +2,7 @@ from typing import NoReturn
 
 from Recorder.BaseRecorder import BaseRecorder
 from .Reader.AlipayReader import AlipayReader
+from Config.const import BillStatus
 
 
 class AlipayRecorder(BaseRecorder):
@@ -27,19 +28,19 @@ class AlipayRecorder(BaseRecorder):
     def update_same_xbill(cls, xbill, same_xbills) -> NoReturn:
         for same in same_xbills:
             if '->' not in same.account and same.account != xbill.account:
-                if same.status == "支出":
+                if same.status == BillStatus.PAYOUT:
                     same.same_of(xbill, same.account + '->' + xbill.account)
-                elif same.status == "收入" and xbill.status == "内部转账":
+                elif same.status == BillStatus.INCOME and xbill.status == BillStatus.INTERNAL_TRANS:
                     account = xbill.account + "->" + same.account
                     same.same_of(xbill, account)
                     xbill.account = account
                     xbill.save()
-                elif same.status == "收入" and xbill.status == "收入":
+                elif same.status == BillStatus.INCOME and xbill.status == BillStatus.INCOME:
                     account = xbill.account + "->" + same.account
                     same.same_of(xbill, account)
                     same.status = '退款'
                     xbill.account = account
-                    xbill.status = '内部转账'
+                    xbill.status = BillStatus.INTERNAL_TRANS
                     xbill.save()
                 else:
                     print(xbill, same)
