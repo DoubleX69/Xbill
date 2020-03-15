@@ -1,0 +1,4 @@
+peewee
+Flask
+pyecharts==1.7.1
+
