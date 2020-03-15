@@ -1,0 +1,47 @@
+{% extends "base.html "%}
+
+
+{% block content %}
+<div class="container" style="padding: 10px; ">
+    <div id="chart_bar" style="width:1200px; height:600px;"></div>
+    <script>
+        $(
+            function () {
+                var chart = echarts.init(document.getElementById('chart_bar'), 'white', {renderer: 'canvas'});
+                $.ajax({
+                    type: "GET",
+                    url: "{{ bar_chart_url }}",
+                    dataType: 'json',
+                    success: function (result) {
+                        chart.setOption(result);
+                    }
+                });
+            }
+        )
+
+    </script>
+
+    <div id="chart_line" style="width:1200px; height:600px;"></div>
+    <script>
+        $(
+            function () {
+                var chart = echarts.init(document.getElementById('chart_line'), 'white', {renderer: 'canvas'});
+                $.ajax({
+                    type: "GET",
+                    url: "{{ line_chart_url }}",
+                    dataType: 'json',
+                    success: function (result) {
+                        chart.setOption(result);
+                    }
+                });
+            }
+        )
+
+    </script>
+
+    <hr>
+    <h2>剩余资产 : {{ balance }} 元</h2>
+</div>
+
+
+{% endblock %}

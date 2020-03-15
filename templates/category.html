@@ -1,0 +1,61 @@
+{% extends "base.html "%}
+
+
+{% block content %}
+
+
+<div class="container" style="padding: 10px; ">
+
+    <form action="{{ url_for('category_statistics') }}" method="post">
+        <div class="input-group" style="width: 200px;padding: 10px;">
+            <input type="text" placeholder="账单月" class="form-control picker" name='{{name}}'>
+            <input type="submit" value="确认">
+        </div>
+    </form>
+
+    <script type="text/javascript">
+            $(".picker").datepicker({
+                format: "yyyy-mm",
+                todayBtn: "linked",
+                language: "zh-CN",
+                orientation: "auto",//日期控件显示位置
+                startView:"months",//默认显示视图：months、years、centuries，可选
+                minViewMode:"months",//最小显示视图
+                keyboardNavigation: false,
+                autoclose: true,
+                todayHighlight: true
+            });
+
+    </script>
+
+</div>
+
+<div class="container" style="padding: 10px; ">
+    {% for x in range(num) %}
+    <div id="chart_{{ x }}" style="width:1200px; height:600px;"></div>
+    <script>
+        $(
+            function () {
+                var chart = echarts.init(document.getElementById('chart_{{ x }}'), 'white', {renderer: 'canvas'});
+                $.ajax({
+                    type: "GET",
+                    url: "{{ charts[x] }}",
+                    dataType: 'json',
+                    success: function (result) {
+                        chart.setOption(result);
+                    }
+                });
+            }
+        )
+
+    </script>
+    {% endfor %}
+
+    <p></p>
+
+    <hr>
+    {% include 'status_table.html' %}
+</div>
+
+
+{% endblock %}

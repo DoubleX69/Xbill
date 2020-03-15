@@ -1,0 +1,13 @@
+{% extends "base.html "%}
+
+
+{% block content %}
+<div class="container" style="padding: 10px; ">
+    <h1>账单上传</h1>
+    <form method=post enctype=multipart/form-data>
+        <input type=file name=file>
+        <input type=submit value=上传>
+    </form>
+</div>
+
+{% endblock %}

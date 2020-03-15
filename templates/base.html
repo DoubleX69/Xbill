@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta name="robots" content="noindex">
+    <title>Xbill-个人财务报表</title>
+
+    <script type='text/javascript' src="/static/jquery-1.12.4/dist/jquery.js"></script>
+
+
+    <script type="text/javascript" src="/static/bootstrap-3.4.1-dist/js/bootstrap.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/bootstrap-3.4.1-dist/css/bootstrap.css">
+
+
+    <script type="text/javascript" src="/static/echarts.min.js"></script>
+    <link rel="stylesheet" href="/static/colors.min.css">
+
+    <script type='text/javascript' src="/static/bootstrap-table-master/dist/bootstrap-table.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/bootstrap-table-master/dist/bootstrap-table.css">
+
+
+    <link rel="stylesheet" href="/static/bootstrap-datepicker-dist/css/bootstrap-datepicker.standalone.min.css">
+    <script src="/static/bootstrap-datepicker-dist/js/bootstrap-datepicker.js"></script>
+
+
+    <script src="/static/bootstrap-table-master/dist/extensions/editable/bootstrap-table-editable.js"></script>
+    <script src="/static/bootstrap3-editable/js/bootstrap-editable.js"></script>
+    <link rel="stylesheet" href="/static/bootstrap3-editable/css/bootstrap-editable.css">
+
+
+</head>
+<body>
+<div class="container" style="padding: 10px; ">
+    <a href="/index">Home</a>
+    <a href="/details">账单明细</a>
+    <a href="/category_statistics">账单报表</a>
+    <a href="/invest">理财</a>
+
+
+    <a href="/annual">年度收支</a>
+    <a href="/statistics">统计</a>
+
+    <a href="/load_file">载入账单</a>
+
+    <a href="https://consumeprod.alipay.com/record/advanced.htm">支付宝账单</a>
+    <hr>
+</div>
+{% block content %} {% endblock %}
+
+</body>
+</html>

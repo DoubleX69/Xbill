@@ -1,0 +1,104 @@
+{% extends "base.html "%}
+
+
+{% block content %}
+
+<div class="container" style="padding: 10px; ">
+
+    <form action="{{ url_for('details') }}" method="post">
+        <div class="input-group" style="width: 200px;padding: 10px;">
+            <input type="text" placeholder="账单月" class="form-control picker" name='{{name}}'>
+            <input type="submit" value="确认">
+        </div>
+    </form>
+
+    <script type="text/javascript">
+            $(".picker").datepicker({
+                format: "yyyy-mm",
+                todayBtn: "linked",
+                language: "zh-CN",
+                orientation: "auto",//日期控件显示位置
+                startView:"months",//默认显示视图：months、years、centuries，可选
+                minViewMode:"months",//最小显示视图
+                keyboardNavigation: false,
+                autoclose: true,
+                todayHighlight: true
+            });
+
+    </script>
+
+</div>
+
+
+<div class="container" style="padding: 10px; ">
+    <div id="chart" style="width:1200px; height:600px;"></div>
+</div>
+<script>
+        $(
+            function () {
+                var chart = echarts.init(document.getElementById('chart'), 'white', {renderer: 'canvas'});
+                $.ajax({
+                    type: "GET",
+                    url: "{{ chart_url }}",
+                    dataType: 'json',
+                    success: function (result) {
+                        chart.setOption(result);
+                    }
+                });
+            }
+        )
+
+</script>
+
+
+<div class="container" style="padding: 10px; ">
+    <table id="table" data-row-style="rowStyle" data-flat="true" data-show-toggle="true" data-virtual-scroll="true"
+           data-height="1000" data-pagination="true"
+           data-page-size="100"></table>
+    <!--        <table id="table"  class=“table table-sm table-hover” data-row-style="rowStyle" data-flat="true" data-show-toggle="true" data-virtual-scroll="true" ></table>-->
+    <script type='text/javascript'>
+
+          $(function() {
+          var data = {{data|tojson}};
+          var columns = {{columns|tojson}};
+            $('#table').bootstrapTable({
+              data: data ,
+              columns: columns ,
+              striped: 'true',
+            });
+
+          });
+
+
+    </script>
+    <script>
+            function rowStyle(row, index) {
+            var classes = [
+              'bg-blue',
+              'bg-green',
+              'bg-orange',
+              'bg-yellow',
+              'bg-red'
+            ]
+
+            if (row.status == "支出") {
+                if(row.category == "投资") {
+                    return {classes: 'bg-orange'}
+                }
+                return {classes: 'bg-red'}
+            }
+            else if (row.status == '收入') {
+                if(row.category == "赎回") {
+                    return {classes: 'bg-olive'}
+                }
+                return {classes: 'bg-green'}
+            }
+            return {classes: 'bg-gray'}
+            }
+
+
+    </script>
+</div>
+
+
+{% endblock %}
