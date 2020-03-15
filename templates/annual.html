@@ -1,0 +1,75 @@
+{% extends "base.html "%}
+
+
+{% block content %}
+
+<div class="container" style="padding: 10px; ">
+    <form action="{{ url_for('annual') }}" method="post">
+        <div class="input-group" style="width: 200px;padding: 10px;">
+            <input type="text" placeholder="账单年" class="form-control bar_picker" name='{{name}}'>
+            <input type="submit" value="确认">
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript">
+        $(".bar_picker").datepicker({
+            format: "yyyy",
+            todayBtn: "linked",
+            language: "zh-CN",
+            orientation: "auto",//日期控件显示位置
+            startView:"years",//默认显示视图：months、years、centuries，可选
+            minViewMode:"years",//最小显示视图
+            keyboardNavigation: false,
+            autoclose: true,
+            todayHighlight: true
+        });
+
+</script>
+
+<div class="container" style="padding: 10px; ">
+    <div id="chart" style="width:1200px; height:600px;"></div>
+    <script>
+        $(
+            function () {
+                var chart = echarts.init(document.getElementById('chart'), 'white', {renderer: 'canvas'});
+                $.ajax({
+                    type: "GET",
+                    url: "{{ chart_url }}",
+                    dataType: 'json',
+                    success: function (result) {
+                        chart.setOption(result);
+                    }
+                });
+            }
+        )
+
+    </script>
+
+    <hr>
+    <div id="pie_chart" style="width:1200px; height:600px;"></div>
+    <script>
+        $(
+            function () {
+                var chart = echarts.init(document.getElementById('pie_chart'), 'white', {renderer: 'canvas'});
+                $.ajax({
+                    type: "GET",
+                    url: "{{ pie_url }}",
+                    dataType: 'json',
+                    success: function (result) {
+                        chart.setOption(result);
+                    }
+                });
+            }
+        )
+
+    </script>
+
+
+    <hr>
+
+    {% include 'status_table.html' %}
+</div>
+
+
+{% endblock %}
