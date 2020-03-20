@@ -4,4 +4,4 @@ from .XBill import XBill
 
 
 def create_table():
-    database.create_tables([AlipayBill, XBill])
+    database.create_tables([AlipayBill, XBill], safe=True)
