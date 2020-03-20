@@ -3,11 +3,22 @@ from datetime import datetime
 
 from flask import Flask, render_template, url_for, request
 from werkzeug.utils import secure_filename, redirect
-from Models import create_table
+from Models import create_table, database
 
 from App import api
 
 app = Flask(__name__)
+
+
+@app.before_request
+def before_request():
+    database.connect()
+
+
+@app.after_request
+def after_request(response):
+    database.close()
+    return response
 
 
 def to_table(data: dict):
