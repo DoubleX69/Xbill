@@ -3,7 +3,7 @@ from .BaseModel import *
 from datetime import datetime
 
 from Helper import Utilities
-
+from Config.const import BillStatus
 
 class XBill(BaseModel):
     id = AutoField(primary_key=True, column_name='id')
@@ -48,7 +48,7 @@ class XBill(BaseModel):
     def same_of(self, other, account):
         self.account = account
         self.trans_time = other.trans_time
-        self.status = '内部转账'
+        self.status = BillStatus.INTERNAL_TRANS
         self.category = '转移'
         self.subcategory = ''
         self.associate_id = other.id
@@ -117,7 +117,7 @@ class XBill(BaseModel):
         return query
 
     def is_payout(self):
-        if self.status == "支出":
+        if self.status == BillStatus.PAYOUT:
             if self.category == '投资':
                 return False
             else:
@@ -127,7 +127,7 @@ class XBill(BaseModel):
 
     def is_income(self):
 
-        if self.valid and self.status == "收入":
+        if self.valid and self.status == BillStatus.INCOME:
             if self.category == '赎回':
                 return False
             else:
@@ -136,7 +136,7 @@ class XBill(BaseModel):
             return False
 
     def is_fund(self):
-        if self.valid and self.status == "支出":
+        if self.valid and self.status == BillStatus.PAYOUT:
             if self.category == '投资':
                 return True
             else:
@@ -145,7 +145,7 @@ class XBill(BaseModel):
             return False
 
     def is_ransom(self):
-        if self.valid and self.status == "收入":
+        if self.valid and self.status == BillStatus.INCOME:
             if self.category == '赎回':
                 return True
             else:
