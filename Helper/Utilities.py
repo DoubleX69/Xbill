@@ -23,3 +23,8 @@ def date_to_str(t):
     s = s.replace('Saturday', '星期六')
     s = s.replace('Sunday', '星期日')
     return s
+
+
+def remove_comma(s=''):
+    s = s.replace(',', '')
+    return s
