@@ -6,19 +6,14 @@ from .DataModel import *
 from .Extractor import *
 from .ChartModel import *
 from .Statistician import Statistician
-from Recorder.RecordFactory import get_recorder
+from Recorder.RecordFactory import save_to_db
 from Config.config import *
 
 
 def read_csv(file_path: str) -> str:
-    recorder = get_recorder(file_path)
-    count = 0
-    if recorder is not None:
-        count = recorder.save()
-    s = "insert {} bills to database...".format(count)
-
-    print(s)
-    return s
+    msg = save_to_db(file_path)
+    print(msg)
+    return msg
 
 
 def draw_balance_bar_in_month(year, month) -> Bar:
