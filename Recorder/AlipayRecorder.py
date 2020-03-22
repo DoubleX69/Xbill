@@ -10,11 +10,11 @@ from Models import database
 
 class AlipayRecorder(BaseRecorder):
 
-    def __init__(self, file_path):
-        super(AlipayRecorder, self).__init__(file_path)
+    def __init__(self, rows):
+        super(AlipayRecorder, self).__init__(rows)
 
     def save(self) -> int:
-        alipay_bills = AlipayReader(self.file_path).read()
+        alipay_bills = AlipayReader(self.rows).read()
         count = 0
 
         with database.transaction() as tr:

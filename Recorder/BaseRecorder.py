@@ -1,7 +1,7 @@
 class BaseRecorder(object):
 
-    def __init__(self, file_path):
-        self.file_path = file_path
+    def __init__(self, rows):
+        self.rows = rows
 
     def save(self):
         raise NotImplementedError

@@ -9,12 +9,12 @@ from Models import database
 
 class ICBCRecorder(BaseRecorder):
 
-    def __init__(self, file_path):
-        super(ICBCRecorder, self).__init__(file_path)
+    def __init__(self, data):
+        super(ICBCRecorder, self).__init__(data)
 
     def save(self) -> int:
         count = 0
-        icbc_bills = ICBCReader(self.file_path).read()
+        icbc_bills = ICBCReader(self.rows).read()
         with database.transaction() as tr:
             try:
                 for bill in icbc_bills:
