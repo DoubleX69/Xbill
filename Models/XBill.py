@@ -5,6 +5,7 @@ from datetime import datetime
 from Helper import Utilities
 from Config.const import BillStatus
 
+
 class XBill(BaseModel):
     id = AutoField(primary_key=True, column_name='id')
     account = CharField(10, column_name='account')
@@ -32,19 +33,6 @@ class XBill(BaseModel):
         else:
             return False
 
-    def set_record(self, **kwargs):
-        self.id = kwargs['id']
-        self.account = kwargs['account']
-        self.amount = kwargs['amount']
-        self.trans_time = kwargs['trans_time']
-        self.status = kwargs['status']
-        self.category = kwargs['category']
-        self.subcategory = kwargs['subcategory']
-        self.trader_name = kwargs['trader_name']
-        self.product_name = kwargs['product_name']
-        self.remarks = kwargs['remarks']
-        self.associate_id = kwargs['associate_id']
-
     def same_of(self, other, account):
         self.account = account
         self.trans_time = other.trans_time
@@ -53,11 +41,6 @@ class XBill(BaseModel):
         self.subcategory = ''
         self.associate_id = other.id
 
-    def to_visual_list(self):
-        return [self.account, self.status, self.amount, self.category, self.product_name]
-
-    def insert_record(self):
-        return self.save()
 
     def get_same(self):
         start_day = self.trans_time.date()
