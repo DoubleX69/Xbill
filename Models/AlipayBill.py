@@ -1,10 +1,11 @@
+from Helper.Utilities import str_to_datetime
 from .BaseModel import *
 from .XBill import XBill
 from Classifier.Classifier import Classifier
 from Config.const import BillStatus
 
 
-class AlipayBill(BaseModel):
+class AlipayBill(BillModel):
     id = AutoField(primary_key=True, column_name='id')
     trans_id = CharField(50, column_name='trans_id', unique=True)
     order_id = CharField(50, column_name='order_id')
@@ -21,6 +22,8 @@ class AlipayBill(BaseModel):
     remarks = TextField(column_name='remarks', null=True)
 
     account = '支付宝'
+    titles = ['交易号', '商家订单号', '交易创建时间', '付款时间', '最近修改时间', '交易来源地', '类型', '交易对方', '商品名称', '金额（元）', '收/支', '交易状态',
+              '服务费（元）', '成功退款（元）', '备注', '资金状态']
 
     class Meta:
         db_table = 'alipay'
@@ -60,8 +63,20 @@ class AlipayBill(BaseModel):
         ret = True if query else False
         return ret
 
-    def save_if_no_exist(self):
-        if not self.is_exist():
-            return self.save()
-        else:
-            return False
+    @classmethod
+    def create_from_row(cls, row) -> "AlipayBill":
+        bill = AlipayBill()
+        bill.trans_id = row[0].strip()
+        bill.order_id = row[1].strip()
+        bill.create_time = str_to_datetime(row[2].strip())
+        bill.modify_time = str_to_datetime(row[4].strip())
+        bill.source = row[5].strip()
+        bill.trans_type = row[6].strip()
+        bill.trader_name = row[7].strip()
+        bill.product_name = row[8].strip()
+        bill.amount = float(row[9].strip())
+        bill.trans_status = row[10].strip()
+        bill.service_fee = float(row[12].strip())
+        bill.remarks = row[14].strip()
+        bill.fund_status = row[15].strip()
+        return bill

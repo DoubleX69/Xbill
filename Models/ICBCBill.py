@@ -5,7 +5,8 @@ from Helper.Utilities import *
 from Config.const import BillStatus
 
 
-class ICBCBill(BaseModel):
+class ICBCBill(BillModel):
+
     id = AutoField(primary_key=True, column_name='id')
     trans_time = DateField(column_name='trans_time')
     summary = CharField(30, column_name='summary')
@@ -17,6 +18,8 @@ class ICBCBill(BaseModel):
     trader_name = CharField(90, column_name='trader_name')
 
     account = "工商银行"
+    titles = ['交易日期', '摘要', '交易场所', '交易国家或地区简称', '钞/汇', '交易金额(收入)', '交易金额(支出)', '交易币种', '记账金额(收入)',
+              '记账金额(支出)', '记账币种', '余额', '对方户名']
 
     class Meta:
         db_table = 'icbc'
@@ -58,8 +61,15 @@ class ICBCBill(BaseModel):
         ret = True if query else False
         return ret
 
-    def save_if_no_exist(self):
-        if not self.is_exist():
-            return self.save()
-        else:
-            return False
+    @classmethod
+    def create_from_row(cls, row) -> "ICBCBill":
+        bill = ICBCBill()
+        bill.trans_time = str_to_date(row[0].strip())
+        bill.summary = row[1].strip()
+        bill.product_name = row[2].strip()
+        bill.set_amount_with_status(row[8].strip(), row[9].strip())
+        bill.currency = row[10].strip()
+        bill.balance = float(remove_comma(row[11].strip()))
+        bill.trader_name = row[12].strip()
+        bill.remarks = row[1].strip()
+        return bill
