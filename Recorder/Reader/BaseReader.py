@@ -1,8 +1,11 @@
-class BaseReader(object):
-    titles = ['Base']
+from Models import *
 
-    def __init__(self, rows):
+
+class BaseReader(object):
+
+    def __init__(self, rows, model):
         self.rows = rows
+        self.model = model
         self.start = -1
         self.end = -1
 
@@ -10,11 +13,11 @@ class BaseReader(object):
         if row is None:
             return False
 
-        if len(row) < len(self.titles):
+        if len(row) < len(self.model.titles):
             return False
         else:
-            for idx in range(len(self.titles)):
-                if self.titles[idx] not in row[idx]:
+            for idx in range(len(self.model.titles)):
+                if self.model.titles[idx] not in row[idx]:
                     return False
             return True
 
@@ -30,8 +33,11 @@ class BaseReader(object):
         self.start = -1
 
     def locate_finish_pos(self):
+        if self.start == -1:
+            return -1
+
         for idx in range(self.start, len(self.rows)):
-            if len(self.rows[idx]) < len(self.titles):
+            if len(self.rows[idx]) < len(self.model.titles):
                 self.end = idx
                 break
 
@@ -39,7 +45,7 @@ class BaseReader(object):
             self.end = len(self.rows)
 
     def to_model(self, row):
-        raise NotImplementedError
+        return self.model.create_from_row(row)
 
     def read(self):
 
