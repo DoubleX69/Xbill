@@ -1,37 +1,14 @@
 from typing import NoReturn
 
-from peewee import PeeweeException
-
 from Recorder.BaseRecorder import BaseRecorder
-from .Reader.AlipayReader import AlipayReader
 from Config.const import BillStatus
-from Models import database
+from Models.AlipayBill import AlipayBill
 
 
 class AlipayRecorder(BaseRecorder):
 
     def __init__(self, rows):
-        super(AlipayRecorder, self).__init__(rows)
-
-    def save(self) -> int:
-        alipay_bills = AlipayReader(self.rows).read()
-        count = 0
-
-        with database.transaction() as tr:
-            try:
-                for bill in alipay_bills:
-                    if bill.save_if_no_exist():
-                        xbill = bill.to_xbill()
-                        if xbill.save():
-                            self.update_same_xbill(xbill, xbill.get_same())
-                            count += 1
-                        else:
-                            print(ValueError("the xbill save failed!!", str(xbill)))
-            except PeeweeException:
-                tr.rollback()
-                count = 0
-
-        return count
+        super(AlipayRecorder, self).__init__(rows, AlipayBill)
 
     @classmethod
     def update_same_xbill(cls, xbill, same_xbills) -> NoReturn:
