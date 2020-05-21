@@ -7,7 +7,7 @@ from Config.const import BillStatus
 
 class AlipayBill(BillModel):
     id = AutoField(primary_key=True, column_name='id')
-    trans_id = CharField(50, column_name='trans_id', unique=True)
+    trans_id = CharField(70, column_name='trans_id', unique=True)
     order_id = CharField(50, column_name='order_id')
     create_time = DateTimeField(column_name='create_time')
     modify_time = DateTimeField(column_name='modify_time')
@@ -22,8 +22,8 @@ class AlipayBill(BillModel):
     remarks = TextField(column_name='remarks', null=True)
 
     account = '支付宝'
-    titles = ['交易号', '商家订单号', '交易创建时间', '付款时间', '最近修改时间', '交易来源地', '类型', '交易对方', '商品名称', '金额（元）', '收/支', '交易状态',
-              '服务费（元）', '成功退款（元）', '备注', '资金状态']
+    titles = ['交易号', '商家订单号', '交易创建时间', '付款时间', '最近修改时间', '交易来源地', '类型', '交易对方', '商品名称',
+              '金额（元）', '收/支', '交易状态', '服务费（元）', '成功退款（元）', '备注', '资金状态']
 
     class Meta:
         db_table = 'alipay'
