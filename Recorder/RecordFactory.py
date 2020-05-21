@@ -6,9 +6,10 @@ from Recorder.ICBCRecorder import ICBCRecorder
 import csv
 
 
-def _read_csv(path, encoding_list=('GBK', 'UTF-8')) -> Optional[List]:
+def _read_csv(path, encoding_list=('GBK', 'UTF-8', 'GB18030')) -> Optional[List]:
     for endcoding in encoding_list:
         try:
+            print("encoding ", endcoding)
             with open(path, encoding=endcoding) as csv_file:
 
                 reader = csv.reader(csv_file)
