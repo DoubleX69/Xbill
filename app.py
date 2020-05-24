@@ -166,8 +166,19 @@ def get_details(year, month):
     data, columns = api.get_balance_details_in_month(year, month)
 
     return render_template("details.html",
-                           chart_url=url_for('get_bar_chart', year=year, month=month),
-                           data=data, columns=columns, name=name)
+                           data=data, columns=columns, name=name, year=year, month=month)
+
+
+@app.route("/details_of_day/year=<year>&month=<month>&day=<day>")
+def details_of_day(year, month, day):
+    name = 'select_month'
+    year = int(year)
+    month = int(month)
+    day = int(day)
+
+    data, columns = api.get_balance_details_in_day(year, month, day)
+    return render_template("details.html",
+                           data=data, columns=columns, name=name, year=year, month=month)
 
 
 @app.route("/category_statistics", methods=['GET', 'POST'])

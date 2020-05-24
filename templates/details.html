@@ -34,20 +34,39 @@
     <div id="chart" style="width:1200px; height:600px;"></div>
 </div>
 <script>
-        $(
-            function () {
-                var chart = echarts.init(document.getElementById('chart'), 'white', {renderer: 'canvas'});
-                $.ajax({
-                    type: "GET",
-                    url: "{{ chart_url }}",
-                    dataType: 'json',
-                    success: function (result) {
-                        chart.setOption(result);
-                    }
-                });
-            }
-        )
+    $(
+        function () {
+            var year = {{ year }};
+            var month = {{ month }};
 
+            var chart = echarts.init(document.getElementById('chart'), 'white', {renderer: 'canvas'});
+            $.ajax({
+                type: "GET",
+                url: "{{ url_for("get_bar_chart", year=year, month=month,) }}",
+                dataType: 'json',
+                success: function (result) {
+                    chart.setOption(result);
+                }
+            });
+
+            function click_chart(params){
+
+                var urls = new Array() ;
+                var url = "";
+                {% for i in range(31) %}
+                    url = "{{ url_for("details_of_day", year=year, month=month,day=i)  }}";
+                    urls[{{i}}] = url;
+                {% endfor %}
+
+                url = urls[params.dataIndex];
+                console.log(url);
+                console.log(params.dataIndex);   //获取点击柱状图的第几个柱子 是从0开始的哦
+                window.location.href=url;
+            }
+
+            chart.on("click",click_chart);
+        }
+    )
 </script>
 
 

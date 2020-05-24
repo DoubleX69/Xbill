@@ -129,6 +129,19 @@ def get_balance_details_in_month(year, month) -> (list, list):
     return visual_xbills, XBill.get_columns_setting()
 
 
+def get_balance_details_in_day(year, month, day) -> (list, list):
+    start_time, end_time = FinancialDateTime.get_day_offset_start_day(year, month, day)
+
+    q = XBill.query_with_date_range(start_time, end_time)
+
+    visual_xbills = []
+    for xbill in q:
+        d = xbill.to_dict()
+        visual_xbills.append(d)
+
+    return visual_xbills, XBill.get_columns_setting()
+
+
 def account_surplus_from_start_to_now() -> float:
     query = XBill.select().order_by(XBill.trans_time)
     s = Statistician(query)
