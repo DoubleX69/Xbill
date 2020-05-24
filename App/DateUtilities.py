@@ -22,6 +22,14 @@ class FinancialDateTime(object):
         end_time = datetime(t.year, t.month, t.day, 23, 59, 59)
         return start_time, end_time
 
+    # 计算从开始日期开始到当前日期经过的天数
+    @classmethod
+    def get_day_offset_start_day(cls, year, month, offset_day) -> (datetime, datetime):
+        start_time = datetime(year, month, cls.START_DAY)
+        start_time = start_time + relativedelta(days=offset_day)
+        end_time = datetime(start_time.year, start_time.month, start_time.day, 23, 59, 59)
+        return start_time, end_time
+
     @classmethod
     def year_range(cls, year) -> (datetime, datetime):
         end_time = datetime(year, 12, 31, 0, 0, 0, 0)
